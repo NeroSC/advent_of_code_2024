@@ -1,6 +1,6 @@
 # Advent_of_code_2024
 
-
+My contributions to the advent of code 2024.
 
 ## Getting started
 
