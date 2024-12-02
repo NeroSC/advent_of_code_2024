@@ -40,8 +40,9 @@ def get_distances_sum(list_A: list, list_B: list):
         int: distances sum
     """
     distances = []
-    for i in range(len(list_A)):
-        distances.append(abs(list_A[i]-list_B[i]))
+
+    for i,elt in enumerate(list_A):
+        distances.append(abs(elt-list_B[i]))
     return sum(distances)
 
 
