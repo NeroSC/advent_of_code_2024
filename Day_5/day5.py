@@ -6,7 +6,7 @@ Author: Nero
 Description:
 Usage:
 """
-
+from collections import defaultdict
 INPUT_FILE = "Day_5/input.txt"
 
 
@@ -25,7 +25,7 @@ def get_data(file: str = INPUT_FILE) -> list:
 
 
 def get_rules_and_updates(data: list):
-    from collections import defaultdict
+
     sep = data.index("")
     rules = defaultdict(set)
     for i in data[:sep]:
@@ -55,20 +55,20 @@ def get_rules_and_updates(data: list):
 
 #     return ordered
 
+def is_valid(rules, update):
+    for i, _ in enumerate(update):
+        for j in range(i+1, len(update)):
+            if update[j] not in rules[update[i]]:
+                return 1
+    return 0
+
 
 def check_updates_part_one(rules: dict, updates: list):
     good_updates = 0
     total = 0
     for update in updates:
         update = list(map(int, update))
-        broken = 0
-        for i, _ in enumerate(update):
-            if broken == 1:
-                break
-            for j in range(i+1, len(update)):
-                if update[j] not in rules[update[i]]:
-                    broken = 1
-                    break
+        broken = is_valid(rules, update)
         if broken == 0:
             good_updates += 1
             total += update[len(update) // 2]
@@ -78,19 +78,15 @@ def check_updates_part_one(rules: dict, updates: list):
 def check_updates_part_two(rules: dict, updates: list):
     good_updates = 0
     total = 0
+    filtered_rules = defaultdict(set)
     for update in updates:
         update = list(map(int, update))
-        broken = 0
-        for i, _ in enumerate(update):
-            if broken == 1:
-                break
-            for j in range(i+1, len(update)):
-                if update[j] not in rules[update[i]]:
-                    broken = 1
-                    break
-        if broken == 0:
-            good_updates += 1
-            total += update[len(update) // 2]
+        filtered_rules = defaultdict(set)
+        if 1 == is_valid(rules, update):
+            for i in update:
+                filtered_rules[i] = rules[i] & set(update)
+            ordered_keys = sorted(filtered_rules, key=lambda k: len(filtered_rules[k]), reverse=True)
+            total += ordered_keys[len(update) // 2]
     return good_updates, total
 
 
