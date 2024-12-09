@@ -54,6 +54,7 @@ def move(data):
     loop = 0
     while 0 <= line <= len(data_test) and 0 <= col <= len(data_test[0]):
         if loop > 1000:
+            # todo make faster
             return (loop)
         loop += 1
         if orientation == 1:
